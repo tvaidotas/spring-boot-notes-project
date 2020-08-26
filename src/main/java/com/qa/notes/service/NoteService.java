@@ -21,6 +21,12 @@ public class NoteService {
         return this.repo.findAll();
     }
 
+    public Note createNote(Note note){
+        return this.repo.save(note);
+    }
 
+    public Note findNoteById(Long id){
+        return this.repo.findById(id).orElseThrow();
+    }
 
 }
