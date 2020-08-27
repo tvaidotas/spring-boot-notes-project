@@ -21,7 +21,7 @@ public class NoteBookController {
     }
 
     @GetMapping("/getAllNoteBooks")
-    public List<NoteBook> getAllNotes(){
+    public List<NoteBook> getAllNoteBooks(){
         return this.noteBookService.readAllNoteBooks();
     }
 
@@ -31,24 +31,18 @@ public class NoteBookController {
     }
 
     @DeleteMapping("/deleteNoteBook/{id}")
-    public Boolean deleteNote(@PathVariable Long id){
+    public Boolean deleteNoteBooks(@PathVariable Long id){
         return this.noteBookService.deleteNoteBookById(id);
     }
 
-//    @GetMapping("/getNoteById/{id}")
-//    public Note getNoteById(@PathVariable Long id){
-//        return this.noteService.findNoteById(id);
-//    }
-//
-//    @PutMapping("/updateNote/{id}")
-//    public Note updateNote(@PathVariable Long id, @RequestBody Note note){
-//        return this.noteService.updateNote(id, note);
-//    }
-//
-//    @PutMapping("/updateNoteWithPathParam")
-//    public Note updateNoteWithPathParam(@PathParam("id") Long id, @RequestBody Note note){
-//        // localhost:8080/updateNoteWithPathParam?id=1
-//        return this.noteService.updateNote(id, note);
-//    }
+    @GetMapping("/getNoteBookById/{id}")
+    public NoteBook getNoteBookById(@PathVariable Long id){
+        return this.noteBookService.findNoteBookById(id);
+    }
+
+    @PutMapping("/updateNoteBook/{id}")
+    public NoteBook updateNoteBook(@PathVariable Long id, @RequestBody NoteBook noteBook){
+        return this.noteBookService.updateNoteBook(id, noteBook);
+    }
 
 }
