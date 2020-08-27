@@ -1,9 +1,8 @@
 package com.qa.notes.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class NoteBook {
@@ -14,6 +13,9 @@ public class NoteBook {
 
     @Column
     private String name;
+
+    @OneToMany(mappedBy = "noteBook", fetch = FetchType.LAZY)
+    private List<Note> notes = new ArrayList<>();
 
     public NoteBook() {
     }
@@ -36,5 +38,13 @@ public class NoteBook {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 }

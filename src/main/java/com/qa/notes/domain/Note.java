@@ -1,9 +1,6 @@
 package com.qa.notes.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Note {
@@ -17,6 +14,9 @@ public class Note {
 
     @Column
     private String description;
+
+    @ManyToOne(targetEntity = NoteBook.class)
+    private NoteBook noteBook;
 
     public Note() {
     }
@@ -48,5 +48,13 @@ public class Note {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public NoteBook getNoteBook() {
+        return noteBook;
+    }
+
+    public void setNoteBook(NoteBook noteBook) {
+        this.noteBook = noteBook;
     }
 }
