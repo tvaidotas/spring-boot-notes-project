@@ -43,3 +43,24 @@ function displayNotebooks(){
     req.open("GET", "http://localhost:8080/getAllNoteBooks");
     req.send();
 }
+
+function submitNote(){
+    let elements = document.getElementById("notesForm").elements;
+    let obj ={};
+    for(let i = 0 ; i < elements.length - 1 ; i++){
+        let item = elements.item(i);
+        obj[item.name] = item.value;
+    }
+
+    const req = new XMLHttpRequest();
+    req.open("POST", "http://localhost:8080/createNote");
+    req.onload = () => {
+        if (req.status === 200 && req.readyState == 4) {
+            console.log("Server Responded with: " + req.responseText);
+        } else {
+            console.log("Oops...");
+        }
+    };
+    req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    req.send(JSON.stringify({ title: obj.title, description: obj.description, noteBook:{ id: Number(obj.noteBookId)} }));
+}

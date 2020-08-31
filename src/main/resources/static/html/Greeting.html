@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello world</title>
+    <script src="../js/homepage.js"></script>
 </head>
 <body>
     <a href="Homepage.html">Homepage</a>
 
     <h1>Hi everyone</h1>
+
+    <form id="notesForm">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="description">Last name:</label><br>
+        <input type="text" id="description" name="description"><br><br>
+        <label for="noteBookId">Notebook ID:</label><br>
+        <input type="text" id="noteBookId" name="noteBookId"><br><br>
+        <input type="submit" onclick="submitNote()" value="Submit">
+    </form>
+
+
+
 </body>
 </html>
