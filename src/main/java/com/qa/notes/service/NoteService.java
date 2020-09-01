@@ -1,40 +1,50 @@
 package com.qa.notes.service;
 
 import com.qa.notes.domain.Note;
+import com.qa.notes.dto.NoteDTO;
 import com.qa.notes.exceptions.NoteNotFoundException;
 import com.qa.notes.repo.NotesRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
 
     private final NotesRepository repo;
 
+    private final ModelMapper mapper;
+
     @Autowired
-    public NoteService(NotesRepository repo) {
+    public NoteService(NotesRepository repo, ModelMapper mapper) {
         this.repo = repo;
+        this.mapper = mapper;
     }
 
-    public List<Note> readAllNotes(){
-        return this.repo.findAll();
+    private NoteDTO mapToDTO(Note note){
+        return this.mapper.map(note, NoteDTO.class);
     }
 
-    public Note createNote(Note note){
-        return this.repo.save(note);
+    public List<NoteDTO> readAllNotes(){
+        return this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
-    public Note findNoteById(Long id){
-        return this.repo.findById(id).orElseThrow(NoteNotFoundException::new);
+    public NoteDTO createNote(Note note){
+        return this.mapToDTO(this.repo.save(note));
     }
 
-    public Note updateNote(Long id, Note note){
-        Note update = findNoteById(id);
+    public NoteDTO findNoteById(Long id){
+        return this.mapToDTO(this.repo.findById(id)
+                .orElseThrow(NoteNotFoundException::new));    }
+
+    public NoteDTO updateNote(Long id, Note note){
+        Note update = this.repo.findById(id).orElseThrow(NoteNotFoundException::new);
         update.setTitle(note.getTitle());
         update.setDescription(note.getDescription());
-        return this.repo.save(update);
+        return this.mapToDTO(this.repo.save(note));
     }
 
     public Boolean deleteNoteById(Long id){

@@ -1,9 +1,11 @@
 package com.qa.notes.rest;
 
 import com.qa.notes.domain.Note;
+import com.qa.notes.dto.NoteDTO;
 import com.qa.notes.service.NoteService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -20,34 +22,37 @@ public class NotesController {
     }
 
     @GetMapping("/")
-    public List<Note> getAllNotes(){
-        return this.noteService.readAllNotes();
+    public ResponseEntity<List<NoteDTO>> getAllNotes(){
+        return ResponseEntity.ok(this.noteService.readAllNotes());
     }
 
     @PostMapping("/createNote")
-    public Note createNote(@RequestBody Note note){
-        return this.noteService.createNote(note);
+    public ResponseEntity<NoteDTO> createNote(@RequestBody Note note){
+        return new ResponseEntity<NoteDTO>(this.noteService.createNote(note), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public Boolean deleteNote(@PathVariable Long id){
-        return this.noteService.deleteNoteById(id);
+    public ResponseEntity<?> deleteNote(@PathVariable Long id){
+        return this.noteService.deleteNoteById(id)
+                ? ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                : ResponseEntity.noContent().build();
     }
 
     @GetMapping("/getNoteById/{id}")
-    public Note getNoteById(@PathVariable Long id){
-        return this.noteService.findNoteById(id);
+    public ResponseEntity<NoteDTO> getNoteById(@PathVariable Long id){
+        return ResponseEntity.ok(this.noteService.findNoteById(id));
+
     }
 
     @PutMapping("/updateNote/{id}")
-    public Note updateNote(@PathVariable Long id, @RequestBody Note note){
-        return this.noteService.updateNote(id, note);
+    public ResponseEntity<NoteDTO> updateNote(@PathVariable Long id, @RequestBody Note note){
+        return ResponseEntity.ok(this.noteService.updateNote(id, note));
     }
 
     @PutMapping("/updateNoteWithPathParam")
-    public Note updateNoteWithPathParam(@PathParam("id") Long id, @RequestBody Note note){
+    public ResponseEntity<NoteDTO> updateNoteWithPathParam(@PathParam("id") Long id, @RequestBody Note note){
         // localhost:8080/updateNoteWithPathParam?id=1
-        return this.noteService.updateNote(id, note);
+        return ResponseEntity.ok(this.noteService.updateNote(id, note));
     }
 
 }

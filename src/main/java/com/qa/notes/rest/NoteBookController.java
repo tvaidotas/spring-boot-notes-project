@@ -1,13 +1,13 @@
 package com.qa.notes.rest;
 
-import com.qa.notes.domain.Note;
 import com.qa.notes.domain.NoteBook;
+import com.qa.notes.dto.NoteBookDTO;
 import com.qa.notes.service.NoteBookService;
-import com.qa.notes.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -21,13 +21,13 @@ public class NoteBookController {
     }
 
     @GetMapping("/getAllNoteBooks")
-    public List<NoteBook> getAllNoteBooks(){
-        return this.noteBookService.readAllNoteBooks();
+    public ResponseEntity<List<NoteBookDTO>> getAllNoteBooks(){
+        return ResponseEntity.ok(this.noteBookService.readAllNoteBooks());
     }
 
     @PostMapping("/createNoteBook")
-    public NoteBook createNoteBook(@RequestBody NoteBook noteBook){
-        return this.noteBookService.createNoteBook(noteBook);
+    public ResponseEntity<NoteBookDTO> createNoteBook(@RequestBody NoteBook noteBook){
+        return new ResponseEntity<NoteBookDTO>(this.noteBookService.createNoteBook(noteBook), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteNoteBook/{id}")
@@ -36,13 +36,13 @@ public class NoteBookController {
     }
 
     @GetMapping("/getNoteBookById/{id}")
-    public NoteBook getNoteBookById(@PathVariable Long id){
-        return this.noteBookService.findNoteBookById(id);
+    public ResponseEntity<NoteBookDTO> getNoteBookById(@PathVariable Long id){
+        return ResponseEntity.ok(this.noteBookService.findNoteBookById(id));
     }
 
     @PutMapping("/updateNoteBook/{id}")
-    public NoteBook updateNoteBook(@PathVariable Long id, @RequestBody NoteBook noteBook){
-        return this.noteBookService.updateNoteBook(id, noteBook);
+    public ResponseEntity<NoteBookDTO> updateNoteBook(@PathVariable Long id, @RequestBody NoteBook noteBook){
+        return ResponseEntity.ok(this.noteBookService.updateNoteBook(id, noteBook));
     }
 
 }
